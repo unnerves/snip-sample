@@ -1,3 +1,5 @@
 *.class
 .idea
 target/
+tmp/
+*.DS_STORE
