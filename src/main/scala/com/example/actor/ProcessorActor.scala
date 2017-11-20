@@ -20,9 +20,16 @@ class ProcessActor extends Actor with ActorLogging with ProcessorConfig {
   import ProcessorActor._
 
   var processedItems = scala.collection.mutable.TreeSet.empty[NewsItem](NewsItemOrdering)
+  var itemIndex = scala.collection.mutable.Map.empty[String, NewsItem]
 
   def receive: Receive = {
     case Process(item) =>
+      // if an object has already been seen, remove it and add the new object
+      if (itemIndex.contains(item.id)) {
+        processedItems.remove(itemIndex(item.id))
+
+      }
+      itemIndex(item.id) = item
       processedItems.add(item)
       if (processedItems.size > maxItems) {
         processedItems.remove(processedItems.last)
