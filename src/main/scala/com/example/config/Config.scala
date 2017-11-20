@@ -17,6 +17,7 @@ trait Config {
 trait RedditConfig extends Config {
   private val redditConfig = config.getConfig("reddit")
 
+  lazy val day = redditConfig.getLong("day")
   lazy val baseUrl = redditConfig.getString("baseUrl")
   lazy val authBaseUrl = redditConfig.getString("authBaseUrl")
   lazy val userAgent = redditConfig.getString("userAgent")

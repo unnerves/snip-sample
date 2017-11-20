@@ -201,7 +201,9 @@ class RedditApiActor(store: ActorRef, process: ActorRef) extends Actor with Acto
             case Some(page) => currentSender ! Enqueue(page)
             case None => log.info("No more pages to retrieve")
           }
-          listing.newsItems.foreach { item =>
+          listing.newsItems.filter { item =>
+            item.created > (currentTime - day)
+          }.foreach { item =>
             process ! Process(item)
           }
           (store ? AddNewsItems(listing)).mapTo[ActionPerformed] onComplete {
@@ -224,6 +226,8 @@ class RedditApiActor(store: ActorRef, process: ActorRef) extends Actor with Acto
 }
 
 trait RedditSupport extends AuthorizedHttpSupport with JsonProtocol with RedditConfig {
+
+  val currentTime: Long = (System.currentTimeMillis / 1000)
 
   def listingForWindow(window: Window, bearerToken: Option[BearerToken]): Future[Listing] = {
     val token = bearerToken match {

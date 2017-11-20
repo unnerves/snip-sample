@@ -20,3 +20,7 @@ Running this project is as simple as:
 ```bash
 sbt compile run
 ```
+
+The sorted news items will be found in `./tmp/processed/`, in a timestamped csv file.
+
+If you'd like to play around with any of the settings, such as the subreddits that the system travers, they can be found in `src/main/resources/application.conf`.
