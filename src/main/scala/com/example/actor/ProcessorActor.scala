@@ -32,11 +32,11 @@ class ProcessActor extends Actor with ActorLogging with ProcessorConfig {
       itemIndex(item.id) = item
       processedItems.add(item)
       if (processedItems.size > maxItems) {
-        processedItems.remove(processedItems.last)
+        processedItems.remove(processedItems.head)
       }
       sender() ! ItemProcessed(s"Processed item $item")
     case ProcessedItems =>
-      sender() ! processedItems.toIterable
+      sender() ! processedItems.toList.reverse
   }
 }
 

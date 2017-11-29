@@ -13,7 +13,7 @@ case class NewsItem(id: String, subreddit: String, score: Int, url: String, crea
   def rate: Int = score / (System.currentTimeMillis / 1000 - created).toInt
   def csv: String = {
     val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    s"$id,$url,${dateFormat.format(created * 1000)}\n"
+    s"$id,$url,$score,${dateFormat.format(created * 1000)}\n"
   }
 }
 case class BearerToken(
